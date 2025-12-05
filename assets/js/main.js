@@ -26,10 +26,17 @@ $(document).ready(function () {
     const id = $producto.data("id");
     const sabor = $producto.find(".card-text").first().text().trim();
 
+    const cantidad = 1;
+
     const existe = carrito.find((p) => p.id == id);
-    
+    if (existe) {
+      existe.cantidad ++;
+      guardarCarrito(carrito);
+      actualizarContador();
+      return;
+    }
     //nuevo producto
-    const nuevoProducto = { nombreProducto, precio, imagen, sabor, id };
+    const nuevoProducto = { nombreProducto, precio, imagen, sabor, id, cantidad };
     carrito.push(nuevoProducto);
     guardarCarrito(carrito);
     actualizarContador();
@@ -46,13 +53,11 @@ $(document).ready(function () {
           const tarjeta = `
             <div class="col-md-3 mb-3"> 
               <div class="card h-100">
-                <img src="${imgPath}" class="card-img-top" alt="${
-            producto.nombreProducto
-          }">
+                <img src="${imgPath}" class="card-img-top" alt="${producto.nombreProducto}">
                 <div class="card-body d-flex flex-column">
                   <h5 class="card-title">${producto.nombreProducto}</h5>
                   <p class="card-text">${producto.sabor}</p>
-                  <p class="card-text">${producto.precio.toLocaleString()}</p>
+                  <p class="card-text">$${producto.precio.toLocaleString()}</p>
                   <button class="botonAñadir btn btn-success mt-auto">Agregar al Carro</button>
                 </div>
               </div>
@@ -90,12 +95,15 @@ $(document).ready(function () {
           <div class="col-2">
             <img src="${producto.imagen}" class="img-fluid rounded p-2">
           </div>
-          <div class="col-6">
+          <div class="col-5" >
             <h5 class="mb-0">${producto.nombreProducto}</h5>
             <span>${producto.sabor}</span>
           </div>
+          <div class="col-1 d-flex justify-content-end">
+            <span>${producto.cantidad}</span>
+          </div>
           <div class="col-2 text-end">
-            <strong>$${producto.precio.toLocaleString()}</strong>
+            <strong>${producto.precio.toLocaleString()}</strong>
           </div>
           <div class="col-2 text-end">
             <button class="btn btn-danger btn-sm botonEliminar" data-index="${index}">Eliminar</button>
