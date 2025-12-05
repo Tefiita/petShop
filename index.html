@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GolPet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
@@ -49,7 +50,10 @@
                         <button class="btn btn-outline-success" type="submit">Buscar</button>
                     </form>
                 </div>
-                <a id="botonCarrito" href="./carrito.html" class=" btn btn-outline-primary">Carrito
+
+                <a id="botonCarrito" href="./carrito.html"
+                    class=" btn btn-outline-primary d-flex align-items-center justify-content-center">
+                    <i class="bi bi-basket"></i>
                     <span id="contadorCarrito">0</span>
                 </a>
             </div>
@@ -61,18 +65,18 @@
     </header>
 
     <main class="container my-4">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="p-5 mb-4 bg-primary text-white rounded-3 text-center">
-                    <h1 class="display-5 fw-bold">Bienvenido a GolPet</h1>
-                    <p class="lead">¡Todo para tu mascota en un solo lugar!</p>
+        <div class="container__row row mb-4">
+            <div class="container__col col-12">
+                <div class="container__slogan p-5 mb-4 text-white rounded-3 text-center">
+                    <h1 class="container__titulo display-5 fw-bold">Bienvenido a GolPet</h1>
+                    <p class="container__texto lead">¡Todo para tu mascota en un solo lugar!</p>
                 </div>
             </div>
         </div>
 
 
         <h2 id="destacados" class="mb-4">Productos Destacados</h2>
-        <div id="carouselDestacados" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div id="carouselDestacados" class="carousel-dark carousel slide mb-5" data-bs-ride="carousel">
             <div class="carousel-inner" id="carouselProductos">
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacados"
@@ -91,6 +95,7 @@
     <footer class="bg-dark text-white text-center mt-auto py-3 w-100">
         <p class="mb-0">&copy; 2024 GolPet. Todos los derechos reservados.</p>
     </footer>
+
     <!-- CDNs -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -99,7 +104,5 @@
         crossorigin="anonymous"></script>
     <script src="./assets/js/main.js"></script>
 </body>
-
-
 
 </html>

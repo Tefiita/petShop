@@ -1,16 +1,29 @@
-html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.main {
+  flex: 1;
 }
 
-main {
-    flex: 1;
+#botonCarrito {
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
+  z-index: 100;
+}
+
+#botonCarrito span {
+  margin-bottom: 0 auto;
+}
+
+.container__slogan {
+  background-color: #3aaa35;
+}
+
+#contenedorProductos{
+  text-align: start;
+  justify-self: anchor-center;
 }
