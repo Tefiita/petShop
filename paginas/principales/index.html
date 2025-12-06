@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GolPet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="/assets/js/webComponent/headerComponent.js"></script>
+    <script src="/assets/js/webComponent/footerComponent.js"></script>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <mi-header></mi-header>
+    </header>
+
+    <main class="container my-4">
+        <div class="container__row row mb-4">
+            <div class="container__col col-12">
+                <div class="container__slogan p-5 mb-4 text-white rounded-3 text-center">
+                    <h1 class="container__titulo display-5 fw-bold">Bienvenido a GolPet</h1>
+                    <p class="container__texto lead">¡Todo para tu mascota en un solo lugar!</p>
+                </div>
+            </div>
+        </div>
+
+
+        <h2 id="destacados" class="mb-4">Productos Destacados</h2>
+        <div id="carouselDestacados" class="carousel-dark carousel slide mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner" id="carouselProductos">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacados"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselDestacados"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center mt-auto py-3 w-100">
+        <mi-footer></mi-footer>
+    </footer>
+
+    <!-- CDNs -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
