@@ -9,10 +9,70 @@
     "formato": 12,
     "sabor": "Pollo y Arroz",
     "precio": 57990,
+    "descripcion": "Producto desarrollado para todas las etapas de vida de tu mascota, destacando el hidrolizado de pollo de la zona central del país como ingrediente principal para asegurar alta palatabilidad, digestibilidad y biodisponibilidad de proteínas. Su fórmula balanceada, con cuidadosa selección de ingredientes, garantiza músculos sanos, huesos fuertes, pelaje brillante y aliento fresco para la óptima salud de tu mascota.",
+    "composicion": "Hidrolizado de pollo entero, vísceras de pollo, arroz entero, hidrolizado de salmón entero, avena, aceite estabilizado de pollo, almidón de mandioca, saccharomyces cerevisie (fuente de fructo - oligosacáridos y manano - oligosacáridos), salvado de arroz, linaza, cloruro de potasio, cloruro de sodio, vitamina A, vitamina D, vitamina E, vitamina K, tiamina, riboflavina, ácido pantoténico, niacina, vitamina B6, biotina, ácido fólico, vitamina B12, cloruro de colina, hierro, sulfato de manganeso, cobre, cobalto, zinc, yodo, selenio, extracto de yucca schidigera y quillay, vitamina C, saborizante natural, extracto de romero y tocoferoles mixtos.",
+    "analiticos": [
+      "Proteína Mín: 32,0%",
+      "Grasa Mín: 19,0%",
+      "Fibra bruta Máx: 3,0%",
+      "Cenizas Máx: 8,5%",
+      "Humedad Máx: 9%",
+      "Calcio Min/Máx: 1,0% - 1,4%",
+      "Fósforo Mín: 0,88% - 1.2%"
+    ],
     "Extra": "",
     "img": 7804675350070,
     "img2": "7804675350070f",
-    "pag": "7804675350070.html"
+    "pag": "7804675350070.html",
+    "table": {
+      "unidad": "gramos",
+      "frecuencia": "diaria",
+      "edades": ["Menos 3 meses", "4 a 9 meses", "10 a 12 meses"],
+      "datos": [
+        {
+          "peso_kg": 1,
+          "menos_3_meses": 55,
+          "4_a_9_meses": 40,
+          "10_a_12_meses": 30
+        },
+        {
+          "peso_kg": 2,
+          "menos_3_meses": 70,
+          "4_a_9_meses": 65,
+          "10_a_12_meses": 50
+        },
+        {
+          "peso_kg": 5,
+          "menos_3_meses": 150,
+          "4_a_9_meses": 110,
+          "10_a_12_meses": 100
+        },
+        {
+          "peso_kg": 10,
+          "menos_3_meses": 220,
+          "4_a_9_meses": 190,
+          "10_a_12_meses": 170
+        },
+        {
+          "peso_kg": 15,
+          "menos_3_meses": 290,
+          "4_a_9_meses": 260,
+          "10_a_12_meses": 230
+        },
+        {
+          "peso_kg": 20,
+          "menos_3_meses": 350,
+          "4_a_9_meses": 320,
+          "10_a_12_meses": 278
+        },
+        {
+          "peso_kg": 30,
+          "menos_3_meses": 460,
+          "4_a_9_meses": 430,
+          "10_a_12_meses": 350
+        }
+      ]
+    }
   },
   {
     "id": 7804675350063,
@@ -24,10 +84,70 @@
     "formato": 12,
     "sabor": "Salmón y Arroz",
     "precio": 57990,
+    "descripcion": "Producto hipoalergénico desarrollado para cada etapa de vida. El ingrediente principal es hidrolizado de salmón, proveniente desde el sur del país, el que contribuye de manera importante en la nutrición de su mascota y asegura una alta palatabilidad, una alta digestibilidad y una alta biodisponibilidad de proteínas garantizando la óptima salud de tu mascota. Adicionalmente, todos sus ingredientes han sido cuidadosamente seleccionados para lograr una fórmula balanceada que le entrega justo lo que tu mascota necesita para tener músculos sanos, huesos fuertes, pelaje brillante y un aliento sano.",
+    "composicion": "Hidrolizado de salmón entero, arroz entero, aceite de salmón y sardinas, avena, almidón de mandioca, saccharomyces cerevisie (fuente de fructo-oligosacáridos y manano-oligosacáridos), salvado de arroz, linaza, cloruro de potasio, cloruro de sodio, vitamina A, vitamina D, vitamina E, vitamina K, tiamina, riboflavina, ácido pantoténico, niacina, vitamina B6, biotina, ácido fólico, vitamina B12, cloruro de colina, hierro, sulfato de manganeso, cobre, cobalto, zinc, yodo, selenio, extracto de yuca schidigera y quillay, vitamina C, extracto de romero y tocoferoles mixtos saborizante natural. Adicionalmente, la línea Sénior contiene harina de langostino.",
+    "analiticos": [
+      "Proteína Mín: 33,0%",
+      "Grasa Mín: 17,0%",
+      "Fibra bruta Máx: 3,0%",
+      "Cenizas Máx: 7,0%",
+      "Humedad Máx: 9%",
+      "Calcio Min/Máx: 1,0% - 1,3%",
+      "Fósforo Mín: 0,8% - 1.2%"
+    ],
     "Extra": "Hipoalergénico",
     "img": 7804675350063,
     "img2": "7804675350063f",
-    "pag": "7804675350063.html"
+    "pag": "7804675350063.html",
+    "table": {
+      "unidad": "gramos",
+      "frecuencia": "diaria",
+      "edades": ["Menos 3 meses", "4 a 9 meses", "10 a 12 meses"],
+      "datos": [
+        {
+          "peso_kg": 1,
+          "menos_3_meses": 55,
+          "4_a_9_meses": 40,
+          "10_a_12_meses": 30
+        },
+        {
+          "peso_kg": 2,
+          "menos_3_meses": 70,
+          "4_a_9_meses": 65,
+          "10_a_12_meses": 50
+        },
+        {
+          "peso_kg": 5,
+          "menos_3_meses": 150,
+          "4_a_9_meses": 110,
+          "10_a_12_meses": 100
+        },
+        {
+          "peso_kg": 10,
+          "menos_3_meses": 220,
+          "4_a_9_meses": 190,
+          "10_a_12_meses": 170
+        },
+        {
+          "peso_kg": 15,
+          "menos_3_meses": 290,
+          "4_a_9_meses": 260,
+          "10_a_12_meses": 230
+        },
+        {
+          "peso_kg": 20,
+          "menos_3_meses": 350,
+          "4_a_9_meses": 320,
+          "10_a_12_meses": 278
+        },
+        {
+          "peso_kg": 30,
+          "menos_3_meses": 460,
+          "4_a_9_meses": 430,
+          "10_a_12_meses": 350
+        }
+      ]
+    }
   },
   {
     "id": 7804675350094,

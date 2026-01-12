@@ -24,34 +24,32 @@ $(document).ready(function () {
 
   // Añadir producto al carrito
   $(document).on("click", ".botonAñadir", function () {
-    const $producto = $(this).closest(".card");
-    const nombreProducto = $producto.find(".card-title").text().trim();
-    const precio = $producto.find(".card-text").last().text().trim();
-    let imagen = $producto.find("img").attr("src");
-    // Corregir ruta de imagen para que sea absoluta y dinámica
-    var currentPath = window.location.pathname;
-    var baseIndex = currentPath.indexOf('/petShop/');
-    var basePath = '';
-    if (baseIndex !== -1) {
-      basePath = currentPath.substring(0, baseIndex + '/petShop/'.length);
-    }
-    if (!imagen.startsWith(basePath)) {
-      // Si la imagen es relativa, hazla absoluta
-      if (imagen.startsWith('../')) {
-        imagen = basePath + 'assets/img/alimento-perro/poema/' + imagen.split('/').pop();
-      } else {
-        imagen = basePath + imagen.replace(/^\/+/, '');
-      }
-    }
-    const id = $producto.find("p[data-id]").data("id");
-    const sabor = $producto.find(".card-text").first().text().trim();
+    let id, nombreProducto, precio, imagen, sabor;
     let cantidad = 1;
+    // Si el botón tiene data-id, estamos en una página de producto individual
+    if ($(this).data("id")) {
+      id = $(this).data("id");
+      // Busca el producto en el JSON cargado (si existe en memoria)
+      // Si no, toma los datos del DOM
+      nombreProducto = $(".card-title").first().text().trim();
+      precio = $(".card-text").last().text().trim();
+      imagen = $("img").first().attr("src");
+      sabor = $(".card-text").first().text().trim();
+    } else {
+      // Desde la lista de productos
+      const $producto = $(this).closest(".card");
+      id = $producto.find("p[data-id]").data("id");
+      nombreProducto = $producto.find(".card-title").text().trim();
+      precio = $producto.find(".card-text").last().text().trim();
+      imagen = $producto.find("img").attr("src");
+      sabor = $producto.find(".card-text").first().text().trim();
+    }
 
-    //comprobar si el producto ya existe en el carrito
-    const existe = carrito.find((p) => p.id === id);
-    console.log(id);
+    // Normalizar ID a string para evitar problemas de comparación
+    id = String(id);
 
-    //existe = true
+    // Buscar si ya existe en el carrito por ID
+    const existe = carrito.find((p) => String(p.id) === id);
     if (existe) {
       existe.cantidad++;
       guardarCarrito(carrito);
@@ -225,4 +223,5 @@ function renderizarCarrito() {
       }
     );
   }
+
 });
