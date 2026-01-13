@@ -73,34 +73,32 @@ $(document).ready(function () {
   // Mostrar productos Poema desde el JSON en cards
   if (document.getElementById("contenedorProductos")) {
     // Usar ruta absoluta comprobada en el navegador
-    var jsonPath = '/petShop/assets/bdd/alimento-perro/bdd-poema1.json';
-    $.getJSON(
-      jsonPath,
-      function (productos) {
-        const $contenedor = $("#contenedorProductos");
-        productos.forEach((producto) => {
-          // Ruta dinámica absoluta para imágenes
-          const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
-          const tarjeta = `
+    var jsonPath = "/petShop/assets/bdd/alimento-perro/bdd-poema1.json";
+    $.getJSON(jsonPath, function (productos) {
+      const $contenedor = $("#contenedorProductos");
+      productos.forEach((producto) => {
+        // Ruta dinámica absoluta para imágenes
+        const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
+        const tarjeta = `
             <div class="col-md-3 mb-3"> 
               <div class="card h-100">
-                <a href="${producto.id}.html">
+                <a href="productoPerro.html?id=${producto.id}">
                   <img src="${imgPath}" class="card-img-top" alt="${producto.nombreProducto}">
                 </a>
                 <div class="card-body d-flex flex-column">
                   <h5 class="card-title">${producto.nombreProducto}</h5>
                   <p class="card-text">${producto.sabor}</p>
                   <p class="card-text">$${producto.precio.toLocaleString()}</p>
+                  <p class="card-text">${producto.id}</p>
                   <p data-id="${producto.id}"></p>
                   <button class="botonAñadir btn btn-success mt-auto">Agregar al Carro</button>
                 </div>
               </div>
             </div>
           `;
-          $contenedor.append(tarjeta);
-        });
-      }
-    );
+        $contenedor.append(tarjeta);
+      });
+    });
   }
   $("#seguirComprando").on("click", () => {
     window.history.go(-1);
@@ -112,19 +110,21 @@ $(document).ready(function () {
   }
 
   // Renderizar productos en el carrito
-function renderizarCarrito() {
-  const $contenedor = $("#contenedorCarrito");
-  $contenedor.empty();
-  if (carrito.length === 0) {
-    $contenedor.html("<span>No hay productos en el carrito</span>");
-    $("#totalCarrito").text("Total: $0");
-    return;
-  }
-  let total = 0;
-  carrito.forEach((producto, index) => {
-    const subtotal = parseInt(producto.precio.replace(/\D/g, "") || 0) * (producto.cantidad || 1);
-    total += subtotal;
-    const $productoHTML = $(`
+  function renderizarCarrito() {
+    const $contenedor = $("#contenedorCarrito");
+    $contenedor.empty();
+    if (carrito.length === 0) {
+      $contenedor.html("<span>No hay productos en el carrito</span>");
+      $("#totalCarrito").text("Total: $0");
+      return;
+    }
+    let total = 0;
+    carrito.forEach((producto, index) => {
+      const subtotal =
+        parseInt(producto.precio.replace(/\D/g, "") || 0) *
+        (producto.cantidad || 1);
+      total += subtotal;
+      const $productoHTML = $(`
       <div class="row mb-3 align-items-center rounded p-2">
         <div class="col-2">
           <img src="${producto.imagen}" class="img-fluid rounded p-2">
@@ -150,10 +150,10 @@ function renderizarCarrito() {
         </div>
       </div>
     `);
-    $contenedor.append($productoHTML);
-  });
-  $("#totalCarrito").text(`Total: $${total.toLocaleString()}`);
-}
+      $contenedor.append($productoHTML);
+    });
+    $("#totalCarrito").text(`Total: $${total.toLocaleString()}`);
+  }
 
   //eliminar un producto del carrito
   $(document).on("click", ".botonEliminar", function () {
@@ -187,41 +187,41 @@ function renderizarCarrito() {
   //carrusel productos en index.html
   if (document.getElementById("carouselProductos")) {
     var currentPath = window.location.pathname;
-    var baseIndex = currentPath.indexOf('/petShop/');
-    var basePath = '';
+    var baseIndex = currentPath.indexOf("/petShop/");
+    var basePath = "";
     if (baseIndex !== -1) {
-      basePath = currentPath.substring(0, baseIndex + '/petShop/'.length);
+      basePath = currentPath.substring(0, baseIndex + "/petShop/".length);
     }
-    var carouselJsonPath = basePath + 'assets/bdd/alimento-perro/bdd-poema1.json';
-    $.getJSON(
-      carouselJsonPath,
-      function (productos) {
-        const destacados = productos
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 3);
-        const carousel = document.getElementById("carouselProductos");
-        carousel.innerHTML = "";
-        destacados.forEach((producto, idx) => {
-          const imgPath = basePath + 'assets/img/alimento-perro/poema/' + producto.img + '.png';
-          carousel.innerHTML += `
+    var carouselJsonPath =
+      basePath + "assets/bdd/alimento-perro/bdd-poema1.json";
+    $.getJSON(carouselJsonPath, function (productos) {
+      const destacados = productos.sort(() => Math.random() - 0.5).slice(0, 3);
+      const carousel = document.getElementById("carouselProductos");
+      carousel.innerHTML = "";
+      destacados.forEach((producto, idx) => {
+        const imgPath =
+          basePath + "assets/img/alimento-perro/poema/" + producto.img + ".png";
+        carousel.innerHTML += `
             <div class="carousel-item${idx === 0 ? " active" : ""}">
               <div class='d-flex justify-content-center'>
                 <div class="card" style="width: 22rem;">
-                  <img src="${imgPath}" class="card-img-top" alt="${producto.nombreProducto}">
+                  <img src="${imgPath}" class="card-img-top" alt="${
+          producto.nombreProducto
+        }">
                   <div class="card-body d-flex flex-column">
                     <h5 class="card-title">${producto.nombreProducto}</h5>
                     <p class="card-text">${producto.sabor}</p>
                     <p class="card-text">${producto.precio.toLocaleString()}</p>
                     <p data-id="${producto.id}"></p>
-                    <button class="btn btn-success mt-auto botonAñadir" data-id="${producto.id}">Agregar al Carro</button>
+                    <button class="btn btn-success mt-auto botonAñadir" data-id="${
+                      producto.id
+                    }">Agregar al Carro</button>
                   </div>
                 </div>
               </div>
             </div>
           `;
-        });
-      }
-    );
+      });
+    });
   }
-
 });

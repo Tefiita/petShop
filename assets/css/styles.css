@@ -1,20 +1,37 @@
 :root {
-  --verde-marca: #3aaa35;
+  --verde-marca: #198754;
   --dorado-marca: #ffbd59;
-
 }
+
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main,
+.main {
+  flex: 1 0 auto;
+}
+
 
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color:  #f1f1f1;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
 }
 
 .main {
   flex: 1;
 }
-
 
 #botonCarrito span {
   margin-bottom: 0 auto;
@@ -27,6 +44,7 @@ body {
 #contenedorProductos {
   text-align: start;
   justify-self: anchor-center;
+  align-self: anchor-center;
 }
 
 #contenedorCarrito {
