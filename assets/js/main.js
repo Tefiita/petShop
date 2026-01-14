@@ -82,7 +82,7 @@ $(document).ready(function () {
         const tarjeta = `
             <div class="col-md-3 mb-3"> 
               <div class="card h-100">
-                <a href="productoPerro.html?id=${producto.id}">
+                <a href="productoPerro.html?id=${producto.id}"> <!-creacion de enlace a la pagina producto individual-->
                   <img src="${imgPath}" class="card-img-top" alt="${producto.nombreProducto}">
                 </a>
                 <div class="card-body d-flex flex-column">
