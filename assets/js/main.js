@@ -58,7 +58,7 @@ $(document).ready(function () {
 
   // Añadir producto al carrito
   $(document).on("click", ".botonAñadir", function () {
-    let id, nombreProducto, precio, imagen, sabor;
+    let id, nombreProducto, precio, imagen, sabor, formato, marca;
     let cantidad = 1;
     // Siempre tomar los datos desde el card más cercano al botón
     const $producto = $(this).closest(".card");
@@ -67,30 +67,35 @@ $(document).ready(function () {
     precio = $producto.find(".card-text").last().text().trim();
     imagen = $producto.find("img").attr("src");
     sabor = $producto.find(".card-text").first().text().trim();
+    formato = $producto.find(".formato-btn.active").data("formato");
+    marca = $producto.find(".marca-producto").text().trim();
+    const precioFormato = $producto.find(".formato-btn.active").data("precio");
+    const idCompuesto = `${id}-${formato}`;
 
     // Normalizar ID a string para evitar problemas de comparación
     id = String(id);
 
     // Buscar si ya existe en el carrito por ID
-    const existe = carrito.find((p) => String(p.id) === id);
+    const existe = carrito.find((p) => p.idCarrito === idCompuesto);
+
     if (existe) {
       existe.cantidad++;
-      guardarCarrito(carrito);
-      actualizarContador();
-      return;
     } else {
-      const nuevoProducto = {
+      carrito.push({
+        idBase: id, // id original del producto
+        idCarrito: idCompuesto, // id único por formato
         nombreProducto,
-        precio,
+        formato, // 👈 CLAVE
+        precio: `$${Number(precioFormato).toLocaleString("es-CL")}`,
         imagen,
         sabor,
-        id,
-        cantidad,
-      };
-      carrito.push(nuevoProducto);
-      guardarCarrito(carrito);
-      actualizarContador();
+        marca,
+        cantidad: 1,
+      });
     }
+
+    guardarCarrito(carrito);
+    actualizarContador();
   });
 
   // Mostrar productos Poema desde el JSON en cards
@@ -100,6 +105,16 @@ $(document).ready(function () {
     $.getJSON(jsonPath, function (productos) {
       const $contenedor = $("#contenedorProductos");
       productos.forEach((producto) => {
+        // En el render de cada producto:
+        let botonesFormato = "";
+        if (Array.isArray(producto.formato) && Array.isArray(producto.precio)) {
+          producto.formato.forEach((f, idx) => {
+            botonesFormato += `<button type="button" class="btn btn-outline-secondary mb-2 formato-btn${idx === 0 ? " active" : ""}" data-precio="${producto.precio[idx]}" data-formato="${f}" style="width: 100%;">${f} Kg</button>`;
+          });
+        } else {
+          botonesFormato = `<button type="button" class="btn btn-outline-secondary mb-2 formato-btn active" data-precio="${producto.precio}" data-formato="${producto.formato}" style="width: 100%;">${producto.formato} Kg</button>`;
+        }
+
         // Rutas para ambas imágenes
         const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
         const img2Path = producto.img2
@@ -110,14 +125,22 @@ $(document).ready(function () {
               <div class="card h-100">
                 <a href="productoPerro.html?id=${producto.id}">
                   <div class="card-img-hover-wrapper">
-                    <img src="${imgPath}" class="card-img-top card-img-main" alt="${producto.nombreProducto}">
-                    <img src="${img2Path}" class="card-img-top card-img-hover" alt="${producto.nombreProducto} alternativo">
+                    <img src="${imgPath}" class="card-img-top card-img-main" alt="${producto.marca} ${producto.nombreProducto}">
+                    <img src="${img2Path}" class="card-img-top card-img-hover" alt="${producto.marca} ${producto.nombreProducto} alternativo">
                   </div>
                 </a>
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title" style="font-size: 1rem;"><strong>${producto.nombreProducto}</strong></h5> 
-                  <p class="card-text"  style="font-size: 0.95rem;">${producto.sabor}</p>
-                  <p class="card-text" style="font-size: 1.25rem; color: var(--verde-marca);"><strong>$${producto.precio.toLocaleString()}</strong></p>
+                  <h5 class="card-title" style="font-size: 1rem;"><strong>${producto.marca} - ${producto.nombreProducto}</strong></h5> 
+                  <p class="card-text"  style="font-size: 0.95rem;">${producto.sabor} Kg </p>
+
+                  
+                  <div class="mb-2" id="formatoBtns-${producto.id}">
+                      ${botonesFormato}
+                  </div>
+                  <p class="card-text precio-producto" style="font-size: 1.25rem; color: var(--verde-marca);">
+                  <strong>$<span id="precioProducto-${producto.id}">${Array.isArray(producto.precio) ? Number(producto.precio[0]).toLocaleString() : Number(producto.precio).toLocaleString()}</span></strong>
+                  
+                    </p>
                   <p data-id="${producto.id}"></p>
                   <button class="botonAñadir btn btn-success mt-auto">Agregar al Carro</button>
                 </div>
@@ -126,6 +149,19 @@ $(document).ready(function () {
           `;
         $contenedor.append(tarjeta);
       });
+
+      //se cambia el precio segun el formato seleccionado
+      $(document).on("click", ".formato-btn", function () {
+        const $btn = $(this);
+        const precio = $btn.data("precio");
+        const $card = $btn.closest(".card");
+        $card.find(".formato-btn").removeClass("active");
+        $btn.addClass("active");
+        $card
+          .find(".precio-producto span")
+          .text(Number(precio).toLocaleString());
+      });
+
       // Agregar CSS para el hover dinámicamente si no existe
       if (!document.getElementById("card-img-hover-style")) {
         const style = document.createElement("style");
@@ -193,6 +229,7 @@ $(document).ready(function () {
         parseInt(producto.precio.replace(/\D/g, "") || 0) *
         (producto.cantidad || 1);
       total += subtotal;
+
       const $productoHTML = $(`
       <div class="row align-items-center p-3 mb-3 carrito-item">
 
@@ -208,7 +245,8 @@ $(document).ready(function () {
           <h6 class="mb-1 fw-semibold text-dark">
             ${producto.nombreProducto}
           </h6>
-          <small class="text-muted">${producto.sabor}</small>
+          <small class="text-muted">${producto.sabor} · ${producto.formato} Kg </small>
+
         </div>
 
         <div class="col-auto">
@@ -293,7 +331,7 @@ $(document).ready(function () {
           parseInt(producto.precio.replace(/\D/g, "") || 0) *
           (producto.cantidad || 1);
         total += subtotal;
-        return `• ${producto.nombreProducto} (x${producto.cantidad})  $${subtotal.toLocaleString("es-CL")}`;
+        return `• ${producto.formato} Kg - ${producto.nombreProducto} (x${producto.cantidad})  $${subtotal.toLocaleString("es-CL")}`;
       })
       .join("\n");
     const mensaje =

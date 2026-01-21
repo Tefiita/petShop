@@ -10,10 +10,10 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
     const producto = productos.find((p) => p.id == id);
     if (producto) {
       document.getElementById("nombreProducto").textContent =
-        producto.nombreProducto;
-      document.getElementById(
-        "precio"
-      ).textContent = `$${producto.precio.toLocaleString()}`;
+        producto.marca + " - " + producto.nombreProducto;
+      // document.getElementById(
+      //   "precio"
+      // ).textContent = `$${producto.precio.toLocaleString()}`;
       document.getElementById("sabor").textContent = producto.sabor;
       document.getElementById("descripcion").textContent = producto.descripcion;
       document.getElementById("composicion").textContent = producto.composicion;
@@ -21,7 +21,7 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
         .map((item) => `<li>${item}</li>`)
         .join("");
       if (producto.tamañoMascota === "cachorro") {
-        let tablaCachorro = document.getElementById(
+        document.getElementById(
           "table"
         ).innerHTML = ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
@@ -90,7 +90,7 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
         producto.tamañoMascota &&
         producto.tamañoMascota.toLowerCase() === "adulto"
       ) {
-        let tablaAdulto = document.getElementById(
+        document.getElementById(
           "table"
         ).innerHTML = ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
@@ -140,7 +140,7 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
                         </div>
                       `;
       } else if (producto.tamañoMascota === "senior") {
-        let tablaSenior = document.getElementById(
+        document.getElementById(
           "table"
         ).innerHTML = ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
