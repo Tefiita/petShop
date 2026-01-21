@@ -232,9 +232,9 @@ $(document).ready(function () {
                     producto.nombreProducto
                   }">
                   <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${producto.nombreProducto}</h5>
-                    <p class="card-text">${producto.sabor}</p>
-                    <p class="card-text">${producto.precio.toLocaleString()}</p>
+                    <h5 class="card-title" style="font-size: 1rem;"><strong>${producto.nombreProducto}</strong></h5> 
+                  <p class="card-text"  style="font-size: 0.95rem;">${producto.sabor}</p>
+                  <p class="card-text" style="font-size: 1.25rem; color: var(--verde-marca);"><strong>$${producto.precio.toLocaleString()}</strong></p>
                     <p data-id="${producto.id}"></p>
                     <button class="btn btn-success mt-auto botonAñadir" data-id="${
                       producto.id

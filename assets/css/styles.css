@@ -90,11 +90,12 @@ body {
   color: var(--blanco) !important;
 }
 
-.footer-custom {
-  background: var(--gris-oscuro);
-  color: var(--blanco);
-  border-top: 3px solid var(--verde-marca);
+.navbar.bg-dark {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
 }
+
 
 .btn-marca {
   background: var(--verde-marca);
@@ -113,4 +114,60 @@ body {
   background: var(--gris-claro);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(24, 49, 83, 0.06);
+}
+
+.footer-custom {
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  border-top: 3px solid var(--verde-marca);
+  font-size: 1rem;
+}
+/* ia */
+.footer-premium {
+  font-size: 0.95rem;
+}
+
+.footer-title {
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.footer-desc {
+  color: #adb5bd;
+  line-height: 1.6;
+}
+
+.footer-text {
+  color: #adb5bd;
+  margin-bottom: 0.3rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.45rem;
+  color: #adb5bd;
+}
+
+.footer-links a {
+  color: #adb5bd;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  background-color: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #6c757d;
 }
