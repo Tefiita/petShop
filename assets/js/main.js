@@ -1,4 +1,27 @@
 $(document).ready(function () {
+  // Insertar mapa solo en la página 'nosotros.html'
+  if (window.location.pathname.includes("nosotros.html")) {
+    // Dirección a buscar
+    const direccion = "Schleyer 225, 3790083 Chillán, Ñuble, Chile";
+    fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`,
+    )
+      .then((resoult) => resoult.json())
+      .then((data) => {
+        if (data.length > 0) {
+          const lat = data[0].lat;
+          const lon = data[0].lon;
+          // Mostrar mapa con Leaflet
+          const map = L.map("map").setView([lat, lon], 15);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors",
+          }).addTo(map);
+          L.marker([lat, lon]).addTo(map).bindPopup(direccion).openPopup();
+        } else {
+          alert("Dirección no encontrada");
+        }
+      });
+  }
   //cargar carrito desde localStorage
   function cargarCarrito() {
     return JSON.parse(localStorage.getItem("carrito")) || [];
@@ -15,9 +38,17 @@ $(document).ready(function () {
   function actualizarContador() {
     const contador = carrito.reduce(
       (acc, producto) => acc + producto.cantidad,
-      0
+      0,
     );
     $("#contadorCarrito").text(contador);
+
+    const total = carrito.reduce(
+      (acc, producto) =>
+        acc +
+        producto.cantidad * parseInt(producto.precio.replace(/\D/g, "") || 0),
+      0,
+    );
+    $("#totalCarrito").text(`$${total.toLocaleString()}`);
   }
 
   actualizarContador();
@@ -26,24 +57,13 @@ $(document).ready(function () {
   $(document).on("click", ".botonAñadir", function () {
     let id, nombreProducto, precio, imagen, sabor;
     let cantidad = 1;
-    // Si el botón tiene data-id, estamos en una página de producto individual
-    if ($(this).data("id")) {
-      id = $(this).data("id");
-      // Busca el producto en el JSON cargado (si existe en memoria)
-      // Si no, toma los datos del DOM
-      nombreProducto = $(".card-title").first().text().trim();
-      precio = $(".card-text").last().text().trim();
-      imagen = $("img").first().attr("src");
-      sabor = $(".card-text").first().text().trim();
-    } else {
-      // Desde la lista de productos
-      const $producto = $(this).closest(".card");
-      id = $producto.find("p[data-id]").data("id");
-      nombreProducto = $producto.find(".card-title").text().trim();
-      precio = $producto.find(".card-text").last().text().trim();
-      imagen = $producto.find("img").attr("src");
-      sabor = $producto.find(".card-text").first().text().trim();
-    }
+    // Siempre tomar los datos desde el card más cercano al botón
+    const $producto = $(this).closest(".card");
+    id = $producto.find("p[data-id]").data("id") || $(this).data("id");
+    nombreProducto = $producto.find(".card-title").text().trim();
+    precio = $producto.find(".card-text").last().text().trim();
+    imagen = $producto.find("img").attr("src");
+    sabor = $producto.find(".card-text").first().text().trim();
 
     // Normalizar ID a string para evitar problemas de comparación
     id = String(id);
@@ -82,14 +102,18 @@ $(document).ready(function () {
         const tarjeta = `
             <div class="col-md-3 mb-3"> 
               <div class="card h-100">
-                <a href="productoPerro.html?id=${producto.id}"> <!-creacion de enlace a la pagina producto individual-->
-                  <img src="${imgPath}" class="card-img-top" alt="${producto.nombreProducto}">
+                <a href="productoPerro.html?id=${
+                  producto.id
+                }"> <!-creacion de enlace a la pagina producto individual-->
+                  <img src="${imgPath}" class="card-img-top" alt="${
+                    producto.nombreProducto
+                  }">
                 </a>
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">${producto.nombreProducto}</h5>
-                  <p class="card-text">${producto.sabor}</p>
-                  <p class="card-text">$${producto.precio.toLocaleString()}</p>
-                  <p class="card-text">${producto.id}</p>
+                  <h5 class="card-title" style="font-size: 1rem;"><strong>${producto.nombreProducto}</strong></h5> 
+                  <p class="card-text"  style="font-size: 0.95rem;">${producto.sabor}</p>
+                  <p class="card-text" style="font-size: 1.25rem; color: var(--verde-marca);"><strong>$${producto.precio.toLocaleString()}</strong></p>
+                  
                   <p data-id="${producto.id}"></p>
                   <button class="botonAñadir btn btn-success mt-auto">Agregar al Carro</button>
                 </div>
@@ -199,15 +223,14 @@ $(document).ready(function () {
       const carousel = document.getElementById("carouselProductos");
       carousel.innerHTML = "";
       destacados.forEach((producto, idx) => {
-        const imgPath =
-          basePath + "assets/img/alimento-perro/poema/" + producto.img + ".png";
+        const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
         carousel.innerHTML += `
             <div class="carousel-item${idx === 0 ? " active" : ""}">
               <div class='d-flex justify-content-center'>
                 <div class="card" style="width: 22rem;">
                   <img src="${imgPath}" class="card-img-top" alt="${
-          producto.nombreProducto
-        }">
+                    producto.nombreProducto
+                  }">
                   <div class="card-body d-flex flex-column">
                     <h5 class="card-title">${producto.nombreProducto}</h5>
                     <p class="card-text">${producto.sabor}</p>

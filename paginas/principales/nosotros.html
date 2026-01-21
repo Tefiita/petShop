@@ -9,7 +9,8 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="../../assets/js/webComponent/headerComponent.js"></script>
     <script src="../../assets/js/webComponent/footerComponent.js"></script>
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -22,21 +23,37 @@
         <div class="row g-4"></div>
         <div id="sobre-nosotros" class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body ">
                     <h5 class="card-title">Nuestra Misión</h5>
-                    <p class="card-text">En Gol Pet Chillán, estamos dedicados a mejorar la calidad de
-                        vida de las mascotas y fortalecer el vínculo con sus tutores.
+                    <p id="mision" class="card-text">En Gol Pet Chillán, estamos dedicados a mejorar la calidad de vida
+                        de las mascotas y fortalecer el vínculo con sus tutores.
                         Ofrecemos productos de alta calidad y un servicio personalizado,
                         mientras fomentamos una comunidad comprometida con el bienestar
                         animal y la educación responsable, para que cada tutor se sienta
                         respaldado en el cuidado de su mascota.
                     </p>
                     <h5 class="card-title">Nuestra Visión</h5>
-                    <p class="card-text">Ser la tienda de mascotas líder en Chillán, reconocida por
-                        nuestra dedicación al bienestar animal, la excelencia en el servicio
+                    <p id="vision" class="card-text">Ser reconocidos como la tienda líder en productos y servicios para
+                        mascotas en Chillán, destacándonos por nuestra dedicación al bienestar animal, innovación y
+                        compromiso con la comunidad. Aspiramos a ser un referente
+                        en educación y cuidado responsable de mascotas, promoviendo relaciones
+                        saludables y felices entre las mascotas y sus tutores.
                     </p>
                 </div>
             </div>
+
+            <section class="mt-5">
+                <h3 class="mb-4">Encuéntranos Aquí</h3>
+                <div id="map" style="height: 350px;"></div>
+            </section>
+            <section class="mt-5">
+                <h3 class="mb-4">Contáctanos</h3>
+                <p>Si tienes alguna pregunta o deseas más información, no dudes en contactarnos:</p>
+                <ul>
+                    <li><strong>Teléfono:</strong> +56 9 1234 5678</li>
+                    <li><strong>Email:</strong> golpetchillan@gmail.com</li>
+                </ul>
+            </section>
         </div>
     </main>
     <footer class="bg-dark text-white text-center mt-auto py-3 w-100">
