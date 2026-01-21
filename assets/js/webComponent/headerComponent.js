@@ -27,13 +27,16 @@ class headerComponent extends HTMLElement {
           ${html}
         `;
         // Forzar actualización del contador del carrito después de inyectar el header
-        if (typeof window.actualizarContador === 'function') {
+        if (typeof window.actualizarContador === "function") {
           window.actualizarContador();
         } else if (window.jQuery) {
           // Si no está global, buscar y actualizar manualmente
           const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-          const contador = carrito.reduce((acc, producto) => acc + producto.cantidad, 0);
-          window.jQuery('#contadorCarrito').text(contador);
+          const contador = carrito.reduce(
+            (acc, producto) => acc + producto.cantidad,
+            0,
+          );
+          window.jQuery("#contadorCarrito").text(contador);
         }
       });
   }

@@ -36,19 +36,22 @@ $(document).ready(function () {
 
   //actualizar contador del carrito
   function actualizarContador() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
     const contador = carrito.reduce(
       (acc, producto) => acc + producto.cantidad,
       0,
     );
-    $("#contadorCarrito").text(contador);
 
     const total = carrito.reduce(
       (acc, producto) =>
         acc +
-        producto.cantidad * parseInt(producto.precio.replace(/\D/g, "") || 0),
+        producto.cantidad * parseInt(producto.precio.replace(/\D/g, ""), 10),
       0,
     );
-    $("#totalCarrito").text(`$${total.toLocaleString()}`);
+
+    $("#contadorCarrito").text(contador);
+    $("#totalCarritoHeader").text(`$${total.toLocaleString()}`);
   }
 
   actualizarContador();
@@ -97,23 +100,24 @@ $(document).ready(function () {
     $.getJSON(jsonPath, function (productos) {
       const $contenedor = $("#contenedorProductos");
       productos.forEach((producto) => {
-        // Ruta dinámica absoluta para imágenes
+        // Rutas para ambas imágenes
         const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
+        const img2Path = producto.img2
+          ? `/petShop/assets/img/alimento-perro/poema/${producto.img2}.png`
+          : imgPath;
         const tarjeta = `
             <div class="col-md-3 mb-3"> 
               <div class="card h-100">
-                <a href="productoPerro.html?id=${
-                  producto.id
-                }"> <!-creacion de enlace a la pagina producto individual-->
-                  <img src="${imgPath}" class="card-img-top" alt="${
-                    producto.nombreProducto
-                  }">
+                <a href="productoPerro.html?id=${producto.id}">
+                  <div class="card-img-hover-wrapper">
+                    <img src="${imgPath}" class="card-img-top card-img-main" alt="${producto.nombreProducto}">
+                    <img src="${img2Path}" class="card-img-top card-img-hover" alt="${producto.nombreProducto} alternativo">
+                  </div>
                 </a>
                 <div class="card-body d-flex flex-column">
                   <h5 class="card-title" style="font-size: 1rem;"><strong>${producto.nombreProducto}</strong></h5> 
                   <p class="card-text"  style="font-size: 0.95rem;">${producto.sabor}</p>
                   <p class="card-text" style="font-size: 1.25rem; color: var(--verde-marca);"><strong>$${producto.precio.toLocaleString()}</strong></p>
-                  
                   <p data-id="${producto.id}"></p>
                   <button class="botonAñadir btn btn-success mt-auto">Agregar al Carro</button>
                 </div>
@@ -122,6 +126,40 @@ $(document).ready(function () {
           `;
         $contenedor.append(tarjeta);
       });
+      // Agregar CSS para el hover dinámicamente si no existe
+      if (!document.getElementById("card-img-hover-style")) {
+        const style = document.createElement("style");
+        style.id = "card-img-hover-style";
+        style.innerHTML = `
+          .card-img-hover-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            min-height: 220px;
+            max-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            overflow: hidden;
+          }
+          .card-img-hover-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 0.3s;
+            background: #fff;
+          }
+          .card-img-main { opacity: 1; z-index: 1; }
+          .card-img-hover { opacity: 0; z-index: 2; }
+          .card-img-hover-wrapper:hover .card-img-main { opacity: 0; }
+          .card-img-hover-wrapper:hover .card-img-hover { opacity: 1; }
+        `;
+        document.head.appendChild(style);
+      }
     });
   }
   $("#seguirComprando").on("click", () => {
@@ -139,9 +177,16 @@ $(document).ready(function () {
     $contenedor.empty();
     if (carrito.length === 0) {
       $contenedor.html("<span>No hay productos en el carrito</span>");
-      $("#totalCarrito").text("Total: $0");
+      $("#totalCarritoPagina").html(`
+        <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
+          <h5 class="mb-0">Total:</h5>
+          <h5 class="fw-bold text-primary">$${total.toLocaleString()}</h5>
+        </div>
+      `);
+
       return;
     }
+
     let total = 0;
     carrito.forEach((producto, index) => {
       const subtotal =
@@ -149,34 +194,57 @@ $(document).ready(function () {
         (producto.cantidad || 1);
       total += subtotal;
       const $productoHTML = $(`
-      <div class="row mb-3 align-items-center rounded p-2">
-        <div class="col-2">
-          <img src="${producto.imagen}" class="img-fluid rounded p-2">
+      <div class="row align-items-center p-3 mb-3 carrito-item">
+
+        <div class="col-2 d-flex justify-content-center">
+          <img 
+            src="${producto.imagen}" 
+            class="img-fluid"
+            style="max-height: 80px; object-fit: contain;"
+          >
         </div>
-        <div class="col-5">
-          <h5 class="mb-0">${producto.nombreProducto}</h5>
-          <span>${producto.sabor}</span>
+
+        <div class="col-4">
+          <h6 class="mb-1 fw-semibold text-dark">
+            ${producto.nombreProducto}
+          </h6>
+          <small class="text-muted">${producto.sabor}</small>
         </div>
-        <div class="col-2 d-flex justify-content-center align-items-center gap-2">
-          <!-- Botón para disminuir cantidad -->
-          <button class="btn btn-outline-secondary btn-sm botonDisminuir" data-index="${index}" title="Disminuir cantidad">-</button>
-          <span class="fw-bold">${producto.cantidad}</span>
-          <!-- Botón para aumentar cantidad -->
-          <button class="btn btn-outline-primary btn-sm botonAumentar" data-index="${index}" title="Aumentar cantidad">+</button>
+
+        <div class="col-auto">
+          <div class="d-flex align-items-center gap-2 w-auto cantidad-wrapper">
+            <button class="btn-cantidad botonDisminuir" data-index="${index}">−</button>
+            <span class="carrito-cantidad">${producto.cantidad}</span>
+            <button class="btn-cantidad botonAumentar" data-index="${index}">+</button>
+          </div>
         </div>
-        <div class="col-2 text-end">
-          <strong>${producto.precio.toLocaleString()}</strong><br>
-          <span class="text-muted">Subtotal: $${subtotal.toLocaleString()}</span>
+
+        <div class="col-3 text-end">
+          <div class="carrito-precio">
+            ${producto.precio.toLocaleString()}
+          </div>
+        <div class="carrito-subtotal">
+          Subtotal: $${subtotal.toLocaleString()}
         </div>
+
+        </div>
+
         <div class="col-1 text-end">
-          <!-- Botón para eliminar producto -->
-          <button class="btn btn-danger btn-sm botonEliminar" data-index="${index}" title="Eliminar producto">🗑️</button>
+          <button class="btn-eliminar botonEliminar" data-index="${index}" title="Eliminar producto">
+          🗑️
+          </button>
+
         </div>
       </div>
-    `);
+      `);
       $contenedor.append($productoHTML);
     });
-    $("#totalCarrito").text(`Total: $${total.toLocaleString()}`);
+    $("#totalCarritoPagina").html(`
+      <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
+        <h5 class="mb-0">Total:</h5>
+        <h5 class="fw-bold" style="color: var(--gris-oscuro);">$${total.toLocaleString()}</h5>
+      </div>
+    `);
   }
 
   //eliminar un producto del carrito
@@ -206,6 +274,41 @@ $(document).ready(function () {
     guardarCarrito(carrito);
     actualizarContador();
     renderizarCarrito();
+  });
+
+  //Boton enviar compra
+  $("#btnFinalizarCompra").on("click", function () {
+    if (!carrito.length) {
+      alert("El carrito está vacío.");
+      return;
+    }
+
+    if (!confirm("¿Deseas finalizar la compra y enviarla por WhatsApp?")) {
+      return;
+    }
+    let total = 0;
+    let productosTexto = carrito
+      .map((producto) => {
+        const subtotal =
+          parseInt(producto.precio.replace(/\D/g, "") || 0) *
+          (producto.cantidad || 1);
+        total += subtotal;
+        return `• ${producto.nombreProducto} (x${producto.cantidad})  $${subtotal.toLocaleString("es-CL")}`;
+      })
+      .join("\n");
+    const mensaje =
+      `🐾 *Nueva solicitud de compra*\n` +
+      `────────────────────\n\n` +
+      productosTexto +
+      `\n\n────────────────────\n` +
+      `💰 *Total:* $${total.toLocaleString("es-CL")}\n\n` +
+      `📍 *Retiro / despacho:* A coordinar\n` +
+      `💬 *Forma de pago:* A convenir\n\n` +
+      `Gracias 😊`;
+
+    const mensajeCodificado = encodeURIComponent(mensaje);
+    const url = `https://api.whatsapp.com/send?phone=56957778975&text=${mensajeCodificado}`;
+    window.open(url, "_blank");
   });
 
   //carrusel productos en index.html
