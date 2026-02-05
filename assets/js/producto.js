@@ -1,9 +1,11 @@
+// Página donde se crea la base de cada producto individual
+
 // 1. Obtener el id de la URL
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
 // 2. Cargar el JSON
-fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
+fetch("../../assets/bdd/alimento-perro/bdd-poema1.json")
   .then((res) => res.json())
   .then((productos) => {
     // 3. Buscar el producto por id
@@ -11,9 +13,6 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
     if (producto) {
       document.getElementById("nombreProducto").textContent =
         producto.marca + " - " + producto.nombreProducto;
-      // document.getElementById(
-      //   "precio"
-      // ).textContent = `$${producto.precio.toLocaleString()}`;
       document.getElementById("sabor").textContent = producto.sabor;
       document.getElementById("descripcion").textContent = producto.descripcion;
       document.getElementById("composicion").textContent = producto.composicion;
@@ -21,9 +20,8 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
         .map((item) => `<li>${item}</li>`)
         .join("");
       if (producto.tamañoMascota === "cachorro") {
-        document.getElementById(
-          "table"
-        ).innerHTML = ` <div class="container mt-4">
+        document.getElementById("table").innerHTML =
+          ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
                             <thead>
                               <tr>
@@ -90,9 +88,8 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
         producto.tamañoMascota &&
         producto.tamañoMascota.toLowerCase() === "adulto"
       ) {
-        document.getElementById(
-          "table"
-        ).innerHTML = ` <div class="container mt-4">
+        document.getElementById("table").innerHTML =
+          ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
                             <thead>
                             <tr>
@@ -140,9 +137,8 @@ fetch("/petShop/assets/bdd/alimento-perro/bdd-poema1.json")
                         </div>
                       `;
       } else if (producto.tamañoMascota === "senior") {
-        document.getElementById(
-          "table"
-        ).innerHTML = ` <div class="container mt-4">
+        document.getElementById("table").innerHTML =
+          ` <div class="container mt-4">
                           <table class="table table-bordered text-center align-middle">
                             <thead>
                             <tr>

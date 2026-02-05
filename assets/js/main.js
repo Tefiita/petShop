@@ -11,6 +11,7 @@ $(document).ready(function () {
         if (data.length > 0) {
           const lat = data[0].lat;
           const lon = data[0].lon;
+          
           // Mostrar mapa con Leaflet
           const map = L.map("map").setView([lat, lon], 15);
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -44,9 +45,11 @@ $(document).ready(function () {
     );
 
     const total = carrito.reduce(
-      (acc, producto) =>
-        acc +
-        producto.cantidad * parseInt(producto.precio.replace(/\D/g, ""), 10),
+      (acc, producto) => {
+        // Si producto.precio es undefined o no es string, usar 0
+        const precioStr = typeof producto.precio === "string" ? producto.precio : "0";
+        return acc + producto.cantidad * parseInt(precioStr.replace(/\D/g, ""), 10);
+      },
       0,
     );
 
@@ -64,12 +67,13 @@ $(document).ready(function () {
     const $producto = $(this).closest(".card");
     id = $producto.find("p[data-id]").data("id") || $(this).data("id");
     nombreProducto = $producto.find(".card-title").text().trim();
-    precio = $producto.find(".card-text").last().text().trim();
+    // Tomar precio y formato seleccionados como número
     imagen = $producto.find("img").attr("src");
     sabor = $producto.find(".card-text").first().text().trim();
     formato = $producto.find(".formato-btn.active").data("formato");
     marca = $producto.find(".marca-producto").text().trim();
-    const precioFormato = $producto.find(".formato-btn.active").data("precio");
+    const precioFormato = Number($producto.find(".formato-btn.active").data("precio"));
+    precio = precioFormato;
     const idCompuesto = `${id}-${formato}`;
 
     // Normalizar ID a string para evitar problemas de comparación
@@ -86,7 +90,7 @@ $(document).ready(function () {
         idCarrito: idCompuesto, // id único por formato
         nombreProducto,
         formato, // 👈 CLAVE
-        precio: `$${Number(precioFormato).toLocaleString("es-CL")}`,
+        precio, // Guardar como número
         imagen,
         sabor,
         marca,
@@ -96,12 +100,13 @@ $(document).ready(function () {
 
     guardarCarrito(carrito);
     actualizarContador();
+    window.dispatchEvent(new Event("carritoActualizado"));
   });
 
   // Mostrar productos Poema desde el JSON en cards
   if (document.getElementById("contenedorProductos")) {
     // Usar ruta absoluta comprobada en el navegador
-    var jsonPath = "/petShop/assets/bdd/alimento-perro/bdd-poema1.json";
+    var jsonPath = "../../assets/bdd/alimento-perro/bdd-poema1.json";
     $.getJSON(jsonPath, function (productos) {
       const $contenedor = $("#contenedorProductos");
       productos.forEach((producto) => {
@@ -116,9 +121,9 @@ $(document).ready(function () {
         }
 
         // Rutas para ambas imágenes
-        const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
+        const imgPath = "../../assets/img/alimento-perro/poema/" + producto.img + ".png";
         const img2Path = producto.img2
-          ? `/petShop/assets/img/alimento-perro/poema/${producto.img2}.png`
+          ? "../../assets/img/alimento-perro/poema/" + producto.img2 + ".png"
           : imgPath;
         const tarjeta = `
             <div class="col-md-3 mb-3"> 
@@ -225,14 +230,10 @@ $(document).ready(function () {
 
     let total = 0;
     carrito.forEach((producto, index) => {
-      const subtotal =
-        parseInt(producto.precio.replace(/\D/g, "") || 0) *
-        (producto.cantidad || 1);
+      const subtotal = (producto.precio || 0) * (producto.cantidad || 1);
       total += subtotal;
-
       const $productoHTML = $(`
       <div class="row align-items-center p-3 mb-3 carrito-item">
-
         <div class="col-2 d-flex justify-content-center">
           <img 
             src="${producto.imagen}" 
@@ -240,15 +241,12 @@ $(document).ready(function () {
             style="max-height: 80px; object-fit: contain;"
           >
         </div>
-
         <div class="col-4">
           <h6 class="mb-1 fw-semibold text-dark">
             ${producto.nombreProducto}
           </h6>
           <small class="text-muted">${producto.sabor} · ${producto.formato} Kg </small>
-
         </div>
-
         <div class="col-auto">
           <div class="d-flex align-items-center gap-2 w-auto cantidad-wrapper">
             <button class="btn-cantidad botonDisminuir" data-index="${index}">−</button>
@@ -256,22 +254,18 @@ $(document).ready(function () {
             <button class="btn-cantidad botonAumentar" data-index="${index}">+</button>
           </div>
         </div>
-
         <div class="col-3 text-end">
           <div class="carrito-precio">
-            ${producto.precio.toLocaleString()}
+            $${Number(producto.precio).toLocaleString()}
           </div>
         <div class="carrito-subtotal">
           Subtotal: $${subtotal.toLocaleString()}
         </div>
-
         </div>
-
         <div class="col-1 text-end">
           <button class="btn-eliminar botonEliminar" data-index="${index}" title="Eliminar producto">
           🗑️
           </button>
-
         </div>
       </div>
       `);
@@ -358,13 +352,13 @@ $(document).ready(function () {
       basePath = currentPath.substring(0, baseIndex + "/petShop/".length);
     }
     var carouselJsonPath =
-      basePath + "assets/bdd/alimento-perro/bdd-poema1.json";
+      basePath + "../../assets/bdd/alimento-perro/bdd-poema1.json";
     $.getJSON(carouselJsonPath, function (productos) {
       const destacados = productos.sort(() => Math.random() - 0.5).slice(0, 3);
       const carousel = document.getElementById("carouselProductos");
       carousel.innerHTML = "";
       destacados.forEach((producto, idx) => {
-        const imgPath = `/petShop/assets/img/alimento-perro/poema/${producto.img}.png`;
+        const imgPath = "../../assets/img/alimento-perro/poema/" + producto.img + ".png";
         carousel.innerHTML += `
             <div class="carousel-item${idx === 0 ? " active" : ""}">
               <div class='d-flex justify-content-center'>
